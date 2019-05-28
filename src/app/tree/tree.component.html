@@ -1,0 +1,65 @@
+<div>
+
+  <mat-tree
+    [dataSource]="dataSource"
+    [treeControl]="treeControl"
+  >
+    <mat-tree-node 
+      *matTreeNodeDef="let node"
+      matTreeNodeToggle
+      matTreeNodePadding
+      class="checklist-leaf-node"
+      [ngClass]="{'drop-above': dragNodeExpandOverArea === 'above' && dragNodeExpandOverNode === node,
+      'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
+      'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node}"
+      draggable="true"
+      (dragstart)="handleDragStart($event, node);"
+      (dragover)="handleDragOver($event, node);"
+      (drop)="handleDrop($event, node);"
+      (dragend)="handleDragEnd($event);"
+
+    >
+      <button mat-icon-button disabled></button>
+      <span>{{node.item}}</span>
+      <button mat-icon-button (click)="addNewItem(node)"><mat-icon>add</mat-icon></button>
+      <button mat-icon-button (click)="deleteItems(node)"><mat-icon>delete</mat-icon></button>
+    </mat-tree-node>
+    
+    <mat-tree-node
+      *matTreeNodeDef="let node; when: hasNoContent"
+      matTreeNodePadding
+      [ngClass]="{'drop-above': dragNodeExpandOverArea === 'above' && dragNodeExpandOverNode === node,
+      'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
+      'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node}"
+      draggable="true"
+      (dragstart)="handleDragStart($event, node);"
+      (dragover)="handleDragOver($event, node);"
+      (drop)="handleDrop($event, node);"
+      (dragend)="handleDragEnd($event);"
+    >
+      <button mat-icon-button ></button>
+        <mat-form-field>
+            <input matInput #itemValue placeholder="New node">
+        </mat-form-field>
+      <button mat-button (click)="saveNode(node, itemValue.value)">Save</button>
+    </mat-tree-node>
+    
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding class="tree-node">
+      <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </button>
+      <span>{{node.item}}</span>
+      <button mat-icon-button (click)="addNewItem(node)"><mat-icon>add</mat-icon></button>
+      <button mat-icon-button (click)="deleteItems(node)" [hidden]="isRoot"><mat-icon>delete</mat-icon></button>
+      <button mat-icon-button (click)="restoreItems(node)"><mat-icon>restore</mat-icon></button>
+    </mat-tree-node>
+      
+  </mat-tree>
+
+  <span #emptyNode></span>
+
+</div>
+
+    

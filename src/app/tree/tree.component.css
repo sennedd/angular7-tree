@@ -1,0 +1,15 @@
+button {
+  margin: 10px;
+}
+
+.drop-above {
+  border-top: 10px solid #f3f3f3;
+}
+
+.drop-below {
+  border-bottom: 10px solid #f3f3f3;
+}
+
+.drop-center {
+  background-color: #f3f3f3;
+}
